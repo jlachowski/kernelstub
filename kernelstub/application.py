@@ -322,13 +322,10 @@ class Kernelstub():
 
         log.debug('Setting up boot...')
 
-        kopts = 'root=UUID={uuid} ro {options}'.format(
-            uuid=drive.root_uuid,
-            options=" ".join(kernel_opts)
-        )
+        if drive.root_uuid:
+            kernel_opts.insert(0, 'root=UUID={uuid} ro'.format(uuid=drive.root_uuid))
+        kopts = ' '.join(kernel_opts)
         log.debug('kopts: %s', kopts)
-
-
 
         installer.setup_kernel(
             kopts,
